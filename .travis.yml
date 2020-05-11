@@ -1,7 +1,7 @@
-language: python
-python:
-  - "2.7"
+language: node_js
+node_js:
+  - "14"
 services:
   - docker
 deploy:
-  script: docker build -t "qe:20200101" .
+  script: docker build -t "helloworld:20200101" .
