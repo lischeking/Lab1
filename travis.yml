@@ -1,6 +1,7 @@
-language: node_js
-node_js:
-  - 14
+language: python
+python:
+  - "2.7"
 services: docker
-install: true
-script: true
+deploy:
+  script:
+    - pip list
