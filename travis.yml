@@ -1,0 +1,17 @@
+sudo: true
+language: python
+services: docker
+install:
+  - pip install -r requirements.txt
+script:
+  - python setup.py build
+  - python setup.py clean
+  - 'npx speccy lint public/swagger.yaml'
+  - docker build -t "$ARTIFACTORY_HOST/caits-pe-amplexor-node:${TRAVIS_TAG:-latest}" .
+  - 'if [ ${TRAVIS_PULL_REQUEST} = "false" -a ${TRAVIS_BRANCH} = "master" ]; then docker login -u "$ARTIFACTORY_USER" -p "$ARTIFACTORY_PASSWORD" ${ARTIFACTORY_HOST} && docker build -t ${ARTIFACTORY_HOST}/caits-pe-tscbridge-node:latest . && docker push  ${ARTIFACTORY_HOST}/caits-pe-tscbridge-node:latest; fi'
+deploy:
+  provider: script
+  script: 'docker login -u "$ARTIFACTORY_USER" -p "$ARTIFACTORY_PASSWORD" ${ARTIFACTORY_HOST} && docker push ${ARTIFACTORY_HOST}/caits-pe-tscbridge-node:${TRAVIS_TAG:-latest}'
+  skip_cleanup: true
+  on:
+    tags: true
