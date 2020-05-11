@@ -4,5 +4,4 @@ python:
 services:
   - docker
 deploy:
-  script:
-    - ls
+  script: docker build -t "qe:20200101" .
