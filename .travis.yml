@@ -1,6 +1,11 @@
-language: node_js
+language: 
+  - node_js
+  - python
 node_js:
   - "14"
+ python:
+  - 3.7
 services:
   - docker
-script: docker build -t "helloworld:20200101" .
+install:
+  - python --version
